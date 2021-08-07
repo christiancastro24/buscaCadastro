@@ -13,7 +13,7 @@ export const ContainerForm = styled.form`
         h1 {
             font-family: 'Oleo Script Swash Caps', cursive;
             font-size: 3rem;
-            margin-top: 2.5rem;
+            margin-top: 4.5rem;
         }
 
         input {
