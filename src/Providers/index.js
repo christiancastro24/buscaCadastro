@@ -1,9 +1,12 @@
 import { AutenticacaoProvider } from "./autenticacao";
+import { LocalizaCepProvider } from "./localizaCep";
 
 export const Providers = ({ children }) => {
     return (
         <AutenticacaoProvider>
-            {children}
+            <LocalizaCepProvider>
+                {children}
+            </LocalizaCepProvider>
         </AutenticacaoProvider>
     )
 }
