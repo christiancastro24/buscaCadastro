@@ -82,6 +82,7 @@ export const Register = () => {
                   label="Senha"
                   {...register("password")} 
                 />
+                <br />
                 {errors.password && errors.password.message}
                 <br /><br />
 
