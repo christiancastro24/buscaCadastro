@@ -1,5 +1,6 @@
 import './App.css';
 import { GlobalStyle } from './components/GlobalStyle/styles';
+import { Toast } from './components/Toastify';
 import { Routes } from './routes';
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <div className="App">
       <Routes />
       <GlobalStyle />
+      <Toast />
     </div>
   );
 }

@@ -3,14 +3,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 import axios from "axios"
 import { Button, TextField } from "@material-ui/core";
-import { ContainerForm } from "./styles";
+import { ContainerForm, Image } from "./styles";
 import { useHistory, Link } from "react-router-dom";
 import { useAutenticacao } from "../../Providers/autenticacao";
+import { useLocalizaCep } from "../../Providers/localizaCep"
+import { toast } from "react-toastify"
+import login from "../../assets/login.svg"
+
 
 export const Login = () => {
     
     const history = useHistory()
+
     const { autenticado, setAutenticado } = useAutenticacao()
+    const { isLoading, setIsLoading } = useLocalizaCep()
 
     const formSchema = yup.object().shape({
         username: yup.string(),
@@ -22,10 +28,13 @@ export const Login = () => {
     })
 
     const onSub = (data) => {
+        setIsLoading(true)
         axios.post("https://kenzieshop.herokuapp.com/sessions/", data)
         .then(res => {
 
             const { access } = res.data
+
+            setIsLoading(false)
 
             localStorage.setItem("@BuscaCep/user", JSON.stringify(access))
 
@@ -33,7 +42,10 @@ export const Login = () => {
 
             history.push("/dashboard")
         })
-        .catch(_ => alert('Usuário ou senha inválidos'))
+        .catch(_ => {
+            setIsLoading(false)
+            toast.error('Usuário ou senha inválidos')
+        })
     }
 
     if(autenticado) {
@@ -44,7 +56,12 @@ export const Login = () => {
     return (
         <div>
             <ContainerForm onSubmit={handleSubmit(onSub)}>
+                <Image>
+                    <img src={login} alt={login} />
+                </Image>
+                <div>
                 <h1>BuscaLogin</h1>
+                {isLoading && <h4>Carregando...</h4>}
                 <TextField 
                   required 
                   variant="outlined" 
@@ -67,6 +84,7 @@ export const Login = () => {
 
                 <Button variant="contained" color="primary" type="submit">Entrar</Button>
                 <p>Não possui conta? Faça seu <Link to={"/register"}>Cadastro</Link></p>
+                </div>
             </ContainerForm>
         </div>
     )

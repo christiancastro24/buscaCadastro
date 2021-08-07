@@ -3,13 +3,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 import axios from "axios"
 import { Button, TextField } from "@material-ui/core";
-import { ContainerForm } from "./styles";
+import { ContainerForm, Image } from "./styles";
 import { useHistory, Link } from "react-router-dom";
 import { useAutenticacao } from "../../Providers/autenticacao";
+import { useLocalizaCep } from "../../Providers/localizaCep"
+import { toast } from "react-toastify"
+import registerImg from "../../assets/register.svg"
 
 export const Register = () => {
 
     const { autenticado } = useAutenticacao()
+    const { isLoading, setIsLoading } = useLocalizaCep()
     const history = useHistory()
 
     const formSchema = yup.object().shape({
@@ -24,12 +28,17 @@ export const Register = () => {
     })
 
     const onSub = (data) => {
+        setIsLoading(true)
         axios.post("https://kenzieshop.herokuapp.com/users/", data)
         .then(_ => {
-            alert("Usuario cadastrado")
+            setIsLoading(false)
+            toast.success("Usuario cadastrado")
             history.push("/login")
         })
-        .catch(_ => alert("Usuario ou e-mail já foram cadastrados"))
+        .catch(_ => {
+            setIsLoading(false)
+            toast.error("Usuario ou e-mail já foram cadastrados")
+        })
     }
 
     if(autenticado) {
@@ -39,6 +48,10 @@ export const Register = () => {
     return (
         <div>
             <ContainerForm onSubmit={handleSubmit(onSub)}>
+              <Image>
+                <img src={registerImg} alt={registerImg} />
+              </Image>
+              <div>
             <h1>BusCadastro</h1>
                 <TextField 
                   required 
@@ -69,15 +82,13 @@ export const Register = () => {
                   label="Senha"
                   {...register("password")} 
                 />
-                <br />
                 {errors.password && errors.password.message}
                 <br /><br />
 
+                {isLoading && <h5>Carregando...</h5>}
                 <Button variant="contained" color="primary" type="submit">Cadastrar</Button>
                 <h4>Já possui uma conta?  <Link to={"/login"}> Entrar</Link></h4>
-            <footer>
-                <p>Seus endereços em um só lugar</p>
-            </footer>
+            </div>
             </ContainerForm>
         </div>
     )

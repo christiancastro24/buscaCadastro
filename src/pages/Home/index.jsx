@@ -11,6 +11,7 @@ export const Home = () => {
         <div>
             <ContainerHome >    
                 <h1>BuscaCep</h1>
+                <h3>Seus endereços de entrega em um só lugar</h3>
                 <Button variant="contained" color="primary" onClick={() => history.push("/register")}>Cadastrar</Button>
                 <Button variant="contained" color="secondary" onClick={() => history.push("/login")}>Login</Button>
             </ContainerHome>
