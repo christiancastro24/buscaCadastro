@@ -9,9 +9,9 @@ export const LocalizaCepProvider = ({ children }) => {
     const [cepNumber, setCepNumber] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
-
-    }, [])
+    const handleSearch = () => {
+        axios.post
+    }
 
     return (
         <LocalizaCepContext.Provider value={{}}>
